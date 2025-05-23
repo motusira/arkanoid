@@ -25,9 +25,13 @@ endif()
 
 set(SOURCES
     src/main.cpp
+    src/game/game.cpp
+    src/window/window.cpp
 )
 
 set(HEADERS
+  src/game/game.hpp
+  src/window/window.hpp
 )
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")

@@ -1,13 +1,12 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "../src/game_board/game_board.hpp"
-#include "../src/window/window.hpp"
-#include "../src/input_handler/input_handler.hpp"
-#include "../src/ui/ui.hpp"
+#include "../game_board/game_board.hpp"
+#include "../window/window.hpp"
+#include "../input_handler/input_handler.hpp"
+#include "../ui/ui.hpp"
 
 typedef enum {
-    STATE_MENU,
     STATE_GAME,
     STATE_PAUSE
 } State;
