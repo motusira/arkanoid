@@ -5,7 +5,8 @@
 void Game::run(void) {
   init();
   while (!WindowShouldClose()) {
-    handle_input();
+    float dt = GetFrameTime();
+    handle_input(dt);
     update();
     drawStart();
     board.draw();
@@ -27,7 +28,8 @@ void Game::drawStart(void) {
 void Game::drawEnd(void) {
   EndDrawing();
 }
-void Game::handle_input(void) {
+void Game::handle_input(float dt) {
+  board.handle_input(dt);
 }
 
 void Game::update(void) {}

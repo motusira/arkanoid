@@ -30,6 +30,7 @@ set(SOURCES
     src/game_board/game_board.cpp
     src/brick/brick.cpp
     src/utils/utils.cpp
+    src/paddle/paddle.cpp
 )
 
 set(HEADERS
@@ -38,6 +39,7 @@ set(HEADERS
   src/game_board/game_board.hpp
   src/brick/brick.hpp
   src/utils/utils.hpp
+  src/paddle/paddle.hpp
 )
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")

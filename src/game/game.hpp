@@ -1,12 +1,9 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "brick/brick.hpp"
 #include "game_board/game_board.hpp"
 #include "ui/ui.hpp"
 #include "window/window.hpp"
-
-#include <vector>
 
 enum class State { STATE_GAME, STATE_PAUSE };
 
@@ -19,13 +16,12 @@ private:
   Window window;
   UI ui;
   State state;
-  std::vector<Brick> bricks;
 
 private:
   void init(void);
   void drawStart(void);
   void drawEnd(void);
-  void handle_input(void);
+  void handle_input(float dt);
   void update(void);
 };
 
