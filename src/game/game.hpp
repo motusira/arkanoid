@@ -3,7 +3,6 @@
 
 #include "brick/brick.hpp"
 #include "game_board/game_board.hpp"
-#include "input_handler/input_handler.hpp"
 #include "ui/ui.hpp"
 #include "window/window.hpp"
 
@@ -18,7 +17,6 @@ public:
 private:
   GameBoard board;
   Window window;
-  InputHandler input_handler;
   UI ui;
   State state;
   std::vector<Brick> bricks;

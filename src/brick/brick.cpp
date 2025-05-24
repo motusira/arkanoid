@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <vector>
 
-BrickType RandomBrickType() {
+BrickType randomBrickType() {
   int r = std::rand() % 100;
   if (r < 60)
     return BrickType::Normal;
@@ -12,9 +12,9 @@ BrickType RandomBrickType() {
   return BrickType::Indestructible;
 }
 
-bool RandomBonusChance() { return (std::rand() % 100) < 10; }
+bool randomBonusChance() { return (std::rand() % 100) < 10; }
 
-Color BrickColorByType(BrickType type) {
+Color brickColorByType(BrickType type) {
   switch (type) {
   case BrickType::Normal:
     return GREEN;
@@ -27,7 +27,7 @@ Color BrickColorByType(BrickType type) {
   }
 }
 
-int HealthByType(BrickType type) {
+int healthByType(BrickType type) {
   switch (type) {
   case BrickType::Normal:
     return 1;
@@ -50,15 +50,15 @@ std::vector<Brick> generateRandomBricks(int rows, int cols, int width,
       Vector2 pos = {static_cast<float>(offsetX + col * (width + spacing)),
                      static_cast<float>(offsetY + row * (height + spacing))};
 
-      BrickType type = RandomBrickType();
+      BrickType type = randomBrickType();
 
-      bricks.push_back(
-          {.pos = pos,
-           .size = {static_cast<float>(width), static_cast<float>(height)},
-           .type = type,
-           .health = HealthByType(type),
-           .hasBonus = RandomBonusChance(),
-           .color = BrickColorByType(type)});
+      bricks.push_back(Brick(
+           pos,
+           {static_cast<float>(width), static_cast<float>(height)},
+           type,
+           healthByType(type),
+           randomBonusChance(),
+           brickColorByType(type)));
     }
   }
 
