@@ -15,6 +15,6 @@ struct Brick {
   Color color;
 };
 
-std::vector<Brick> GenerateRandomBricks(int rows, int cols, int width, int height, int spacing, int offsetX, int offsetY);
+std::vector<Brick> generateRandomBricks(int rows, int cols, int width, int height, int spacing, int offsetX, int offsetY);
 
 #endif
