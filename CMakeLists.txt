@@ -27,11 +27,15 @@ set(SOURCES
     src/main.cpp
     src/game/game.cpp
     src/window/window.cpp
+    src/game_board/game_board.cpp
+    src/brick/brick.cpp
 )
 
 set(HEADERS
   src/game/game.hpp
   src/window/window.hpp
+  src/game_board/game_board.hpp
+  src/brick/brick.hpp
 )
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")

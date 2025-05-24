@@ -25,7 +25,8 @@ private:
 
 private:
   void init(void);
-  void draw(void);
+  void drawStart(void);
+  void drawEnd(void);
   void handle_input(void);
   void update(void);
 };

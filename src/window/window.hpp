@@ -6,10 +6,10 @@ public:
 
 public:
   void init(void);
-  int get_widht(void);
-  int get_height(void);
-  Window();
-  ~Window();
+  int getWidth(void);
+  int getHeight(void);
+  Window(void);
+  ~Window(void);
 
 private:
   int width;
