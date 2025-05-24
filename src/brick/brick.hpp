@@ -4,6 +4,9 @@
 #include "raylib.h"
 #include <vector>
 
+#define BRICK_WIDTH 30
+#define BRICK_HEIGHT 20
+
 enum class BrickType { Normal, Armored, Indestructible };
 
 struct Brick {

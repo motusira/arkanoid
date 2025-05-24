@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "raylib.h"
+#include "utils/utils.hpp"
 
 void Game::run(void) {
   init();
@@ -13,6 +14,7 @@ void Game::run(void) {
 }
 
 void Game::init(void) {
+  initRandom();
   window.init();
   board.init(window.getWidth(), window.getHeight());
 }
@@ -26,8 +28,6 @@ void Game::drawEnd(void) {
   EndDrawing();
 }
 void Game::handle_input(void) {
-  BeginDrawing();
-  EndDrawing();
 }
 
 void Game::update(void) {}
