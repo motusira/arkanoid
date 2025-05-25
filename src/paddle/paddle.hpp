@@ -25,7 +25,7 @@ public:
         DrawRectangleV(pos, size, color);
     }
 
-    void handle_input(float dt, int width);
+    void update(float dt, int width);
 };
 
 #endif

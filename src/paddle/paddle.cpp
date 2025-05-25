@@ -1,6 +1,6 @@
 #include "paddle.hpp"
 
-void Paddle::handle_input(float dt, int width) {
+void Paddle::update(float dt, int width) {
   float speed = 400.0f;
 
   if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
