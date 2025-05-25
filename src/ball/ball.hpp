@@ -8,9 +8,10 @@ public:
   Vector2 pos;
   Vector2 velocity;
   float radius = 12.0f;
-  Color color = YELLOW;
+  Color color = RED;
+  bool stuckToPaddle;
 
-  Ball(Vector2 pos, Vector2 vel) : pos(pos), velocity(vel) {}
+  Ball(Vector2 pos, Vector2 vel, bool stuck) : pos(pos), velocity(vel), stuckToPaddle(stuck) {}
 
   void update(float dt) {
     pos.x += velocity.x * dt;

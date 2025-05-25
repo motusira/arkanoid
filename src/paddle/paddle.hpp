@@ -2,6 +2,7 @@
 #define PADDLE_HPP
 
 #include "hittable_object/hittable_object.hpp"
+#include "raymath.h"
 
 class Paddle : public HittableObject {
 public:
@@ -26,6 +27,9 @@ public:
     }
 
     void update(float dt, int width);
+    void setSize(float m) {
+        size.x = Clamp(size.x * m, 100, 500);
+    }
 };
 
 #endif

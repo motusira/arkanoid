@@ -1,9 +1,11 @@
 #include "game_board.hpp"
 #include "brick/brick.hpp"
 #include "paddle/paddle.hpp"
+#include "raymath.h"
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <filesystem>
 
 void GameBoard::update(float dt) {
   paddle.update(dt, width);
@@ -11,10 +13,65 @@ void GameBoard::update(float dt) {
     ball.update(dt);
   }
   handleBallCollisions();
-  balls.erase(std::remove_if(
-                  balls.begin(), balls.end(),
-                  [&](const Ball &b) { return (b.pos.y - b.radius) > height && (score-=50); }),
+  balls.erase(std::remove_if(balls.begin(), balls.end(),
+                             [&](const Ball &b) {
+                               return (b.pos.y - b.radius) > height &&
+                                      (score -= 50);
+                             }),
               balls.end());
+
+  for (Ball &ball : balls) {
+    if (ball.stuckToPaddle) {
+      Vector2 paddleCenter = paddle.pos;
+      ball.pos = {paddleCenter.x, paddle.getBounds().y - ball.radius - 2};
+      if (IsKeyPressed(KEY_SPACE)) {
+        ball.stuckToPaddle = false;
+        stickedBall = false;
+        ball.velocity = {0, -200};
+      }
+    } else {
+      ball.update(dt);
+    }
+  }
+
+  for (auto &bonus : bonuses) {
+    if (!bonus.isDestroyed() &&
+        CheckCollisionRecs(paddle.getBounds(), bonus.getBounds())) {
+      bonus.onCollected();
+      applyBonusEffect(bonus.type);
+    } else {
+      bonus.update(dt);
+    }
+  }
+
+  bonuses.erase(std::remove_if(bonuses.begin(), bonuses.end(),
+                               [this](const Bonus &b) {
+                                 return b.isDestroyed() ||
+                                        b.getBounds().y > height;
+                               }),
+                bonuses.end());
+}
+
+BonusType randomBonusType() {
+  int r = GetRandomValue(0, 5);
+  return static_cast<BonusType>(r);
+}
+
+void GameBoard::spawnExtraBall() {
+  if (balls.empty())
+    return;
+
+  for (auto &ball : balls) {
+    if (ball.stuckToPaddle == true) {
+      continue;
+    }
+    Ball extra = ball;
+    extra.velocity = {extra.velocity.x != 0.0 ? -extra.velocity.x
+                                              : std::rand() % 200 - 100,
+                      extra.velocity.y};
+    balls.push_back(extra);
+    break;
+  }
 }
 
 void GameBoard::draw(void) {
@@ -25,6 +82,9 @@ void GameBoard::draw(void) {
   }
   for (auto &ball : balls) {
     ball.draw();
+  }
+  for (auto &bonus : bonuses) {
+    bonus.draw();
   }
   paddle.draw();
 
@@ -47,12 +107,35 @@ void GameBoard::init(int winWidth, int winHeight) {
   paddle = Paddle(
       {static_cast<float>(height - 90), static_cast<float>(width / 2 - 30)},
       {180, 20});
-  balls.emplace_back(Vector2{500, 600}, Vector2{200, -200});
-  balls.emplace_back(Vector2{500, 500}, Vector2{200, -200});
-  balls.emplace_back(Vector2{200, 600}, Vector2{200, -200});
-  balls.emplace_back(Vector2{300, 500}, Vector2{200, -200});
-  balls.emplace_back(Vector2{400, 600}, Vector2{200, -200});
-  balls.emplace_back(Vector2{100, 500}, Vector2{300, -200});
+  balls.emplace_back(Vector2{500, 600}, Vector2{200, -200}, true);
+  stickedBall = true;
+}
+
+void GameBoard::applyBonusEffect(BonusType type) {
+  switch (type) {
+  case BonusType::ExtraBall:
+    spawnExtraBall();
+    break;
+  case BonusType::PaddleSizeIncrease:
+    paddle.setSize(1.5f);
+    break;
+  case BonusType::PaddleSizeDecrease:
+    paddle.setSize(0.75f);
+    break;
+  case BonusType::BallSpeedUp:
+    for (auto &ball : balls) {
+      ball.velocity.x = Clamp(ball.velocity.x * 1.2f, -400, 400);
+      ball.velocity.y = Clamp(ball.velocity.y * 1.2f, -400, 400);
+    }
+    break;
+  case BonusType::BallStickiness:
+    if (!stickedBall)
+      balls.front().stuckToPaddle = true;
+    break;
+  case BonusType::TemporaryBottom:
+    // temporaryBottomActive = true;
+    break;
+  }
 }
 
 void GameBoard::handleBallCollisions() {
@@ -130,8 +213,12 @@ void GameBoard::handleBallCollisions() {
         ball.velocity.y *= -1;
 
       brick.onBallHit();
-      if (brick.isDestroyed()) {
-        score += 10;
+      if (brick.type != BrickType::Indestructible) {
+        score += 1;
+      }
+      if (brick.isDestroyed() || brick.hasBonus) {
+        bonuses.push_back(Bonus(Vector2Add(brick.pos, {brick.size.x / 4, 0}),
+                                randomBonusType()));
       }
 
       break;
