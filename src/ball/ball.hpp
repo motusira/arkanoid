@@ -11,7 +11,8 @@ public:
   Color color = RED;
   bool stuckToPaddle;
 
-  Ball(Vector2 pos, Vector2 vel, bool stuck) : pos(pos), velocity(vel), stuckToPaddle(stuck) {}
+  Ball(Vector2 pos, Vector2 vel, bool stuck)
+      : pos(pos), velocity(vel), stuckToPaddle(stuck) {}
 
   void update(float dt) {
     pos.x += velocity.x * dt;
@@ -26,9 +27,7 @@ public:
 
   void reflectY() { velocity.y *= -1; }
   void reflectX() { velocity.x *= -1; }
-  Vector2 getCenter() const {
-    return {pos.x + radius, pos.y + radius};
-  }
+  Vector2 getCenter() const { return {pos.x + radius, pos.y + radius}; }
 };
 
 #endif

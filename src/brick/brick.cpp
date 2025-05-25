@@ -60,12 +60,8 @@ std::vector<Brick> generateRandomBricks(int rows, int cols, int width,
       BrickType type = randomBrickType();
 
       bricks.push_back(Brick(
-           pos,
-           {static_cast<float>(width), static_cast<float>(height)},
-           type,
-           healthByType(type),
-           randomBonusChance(),
-           brickColorByType(type)));
+          pos, {static_cast<float>(width), static_cast<float>(height)}, type,
+          healthByType(type), randomBonusChance(), brickColorByType(type)));
     }
   }
 

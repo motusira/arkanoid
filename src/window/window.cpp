@@ -6,19 +6,13 @@ void Window::init(void) {
   SetTargetFPS(60);
 }
 
-int Window::getWidth(void) {
-  return width;
-}
+int Window::getWidth(void) { return width; }
 
-int Window::getHeight(void) {
-  return height;
-}
+int Window::getHeight(void) { return height; }
 
 Window::Window(void) {
   width = 1280;
   height = 720;
 }
 
-Window::~Window(void) {
-  CloseWindow();
-}
+Window::~Window(void) { CloseWindow(); }

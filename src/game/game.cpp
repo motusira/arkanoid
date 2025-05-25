@@ -25,11 +25,7 @@ void Game::drawStart(void) {
   ClearBackground(RAYWHITE);
 }
 
-void Game::drawEnd(void) {
-  EndDrawing();
-}
-void Game::handle_input(float dt) {
-  board.update(dt);
-}
+void Game::drawEnd(void) { EndDrawing(); }
+void Game::handle_input(float dt) { board.update(dt); }
 
 void Game::update(void) {}

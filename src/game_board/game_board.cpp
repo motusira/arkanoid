@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
-#include <filesystem>
 
 void GameBoard::update(float dt) {
   paddle.update(dt, width);
@@ -220,8 +219,8 @@ void GameBoard::handleBallCollisions() {
         ball.velocity.y *= -1;
 
       if (brick.type == BrickType::SpeedBoost) {
-      ball.velocity.x = Clamp(ball.velocity.x * 1.2f, -600, 600);
-      ball.velocity.y = Clamp(ball.velocity.y * 1.2f, -600, 600);
+        ball.velocity.x = Clamp(ball.velocity.x * 1.2f, -600, 600);
+        ball.velocity.y = Clamp(ball.velocity.y * 1.2f, -600, 600);
       }
 
       brick.onBallHit();

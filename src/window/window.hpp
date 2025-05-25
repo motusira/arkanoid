@@ -3,7 +3,6 @@
 
 class Window {
 public:
-
 public:
   void init(void);
   int getWidth(void);

@@ -2,7 +2,6 @@
 #define GAME_HPP
 
 #include "game_board/game_board.hpp"
-#include "ui/ui.hpp"
 #include "window/window.hpp"
 
 enum class State { STATE_GAME, STATE_PAUSE };
@@ -14,7 +13,6 @@ public:
 private:
   GameBoard board;
   Window window;
-  UI ui;
   State state;
 
 private:
