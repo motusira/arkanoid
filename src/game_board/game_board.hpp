@@ -22,6 +22,7 @@ private:
   int topOffset;
   int score;
   bool stickedBall;
+  bool temporaryBottom;
   std::vector<Brick> bricks;
   std::vector<Ball> balls;
   std::vector<Bonus> bonuses;

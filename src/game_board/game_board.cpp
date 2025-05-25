@@ -1,6 +1,7 @@
 #include "game_board.hpp"
 #include "brick/brick.hpp"
 #include "paddle/paddle.hpp"
+#include "raylib.h"
 #include "raymath.h"
 #include <algorithm>
 #include <cmath>
@@ -92,6 +93,7 @@ void GameBoard::draw(void) {
 
   DrawText(TextFormat("Score: %d", score), 20, 15, 20, WHITE);
   DrawText(TextFormat("Balls: %d", balls.size()), 280, 15, 20, WHITE);
+  DrawText(TextFormat("Temporary botom: %s", temporaryBottom ? "Activated" : "Disabled"), 480, 15, 20, WHITE);
 
   DrawLine(0, 50, width, 50, GRAY);
 }
@@ -124,8 +126,8 @@ void GameBoard::applyBonusEffect(BonusType type) {
     break;
   case BonusType::BallSpeedUp:
     for (auto &ball : balls) {
-      ball.velocity.x = Clamp(ball.velocity.x * 1.2f, -400, 400);
-      ball.velocity.y = Clamp(ball.velocity.y * 1.2f, -400, 400);
+      ball.velocity.x = Clamp(ball.velocity.x * 1.2f, -600, 600);
+      ball.velocity.y = Clamp(ball.velocity.y * 1.2f, -600, 600);
     }
     break;
   case BonusType::BallStickiness:
@@ -133,7 +135,7 @@ void GameBoard::applyBonusEffect(BonusType type) {
       balls.front().stuckToPaddle = true;
     break;
   case BonusType::TemporaryBottom:
-    // temporaryBottomActive = true;
+    temporaryBottom = true;
     break;
   }
 }
@@ -154,10 +156,11 @@ void GameBoard::handleBallCollisions() {
       ball.pos.y = 50 + ball.radius;
       ball.velocity.y *= -1;
     }
-    // if (ball.pos.y + ball.radius >= height) {
-    //   ball.pos.y = height - ball.radius;
-    //   ball.velocity.y *= -1;
-    // }
+    if (ball.pos.y + ball.radius >= height && temporaryBottom) {
+      ball.pos.y = height - ball.radius;
+      ball.velocity.y *= -1;
+      temporaryBottom = false;
+    }
 
     Rectangle paddleRect = paddle.getBounds();
     if (CheckCollisionCircleRec(ball.pos, ball.radius, paddleRect)) {
