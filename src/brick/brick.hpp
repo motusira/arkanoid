@@ -8,7 +8,7 @@
 #define BRICK_WIDTH 30
 #define BRICK_HEIGHT 20
 
-enum class BrickType { Normal, Armored, Indestructible };
+enum class BrickType { Normal, Armored, SpeedBoost, Indestructible };
 
 class Brick : public HittableObject {
 public:

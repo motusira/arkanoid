@@ -219,6 +219,11 @@ void GameBoard::handleBallCollisions() {
       if (bounceY)
         ball.velocity.y *= -1;
 
+      if (brick.type == BrickType::SpeedBoost) {
+      ball.velocity.x = Clamp(ball.velocity.x * 1.2f, -600, 600);
+      ball.velocity.y = Clamp(ball.velocity.y * 1.2f, -600, 600);
+      }
+
       brick.onBallHit();
       if (brick.type != BrickType::Indestructible) {
         score += 1;

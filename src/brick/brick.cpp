@@ -7,6 +7,9 @@ BrickType randomBrickType() {
   int r = std::rand() % 100;
   if (r < 60)
     return BrickType::Normal;
+  if (r < 80) {
+    return BrickType::SpeedBoost;
+  }
   if (r < 90)
     return BrickType::Armored;
   return BrickType::Indestructible;
@@ -22,6 +25,8 @@ Color brickColorByType(BrickType type) {
     return BLUE;
   case BrickType::Indestructible:
     return GRAY;
+  case BrickType::SpeedBoost:
+    return PURPLE;
   default:
     return BLACK;
   }
@@ -30,6 +35,8 @@ Color brickColorByType(BrickType type) {
 int healthByType(BrickType type) {
   switch (type) {
   case BrickType::Normal:
+    return 1;
+  case BrickType::SpeedBoost:
     return 1;
   case BrickType::Armored:
     return 3;
