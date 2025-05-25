@@ -1,6 +1,7 @@
 #include "game_board.hpp"
 #include "brick/brick.hpp"
 #include "paddle/paddle.hpp"
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 
@@ -10,6 +11,10 @@ void GameBoard::update(float dt) {
     ball.update(dt);
   }
   handleBallCollisions();
+  balls.erase(std::remove_if(
+                  balls.begin(), balls.end(),
+                  [&](const Ball &b) { return (b.pos.y - b.radius) > height && (score-=50); }),
+              balls.end());
 }
 
 void GameBoard::draw(void) {
@@ -26,6 +31,7 @@ void GameBoard::draw(void) {
   DrawRectangle(0, 0, width, 50, DARKGRAY);
 
   DrawText(TextFormat("Score: %d", score), 20, 15, 20, WHITE);
+  DrawText(TextFormat("Balls: %d", balls.size()), 280, 15, 20, WHITE);
 
   DrawLine(0, 50, width, 50, GRAY);
 }
@@ -65,10 +71,10 @@ void GameBoard::handleBallCollisions() {
       ball.pos.y = 50 + ball.radius;
       ball.velocity.y *= -1;
     }
-    if (ball.pos.y + ball.radius >= height) {
-      ball.pos.y = height - ball.radius;
-      ball.velocity.y *= -1;
-    }
+    // if (ball.pos.y + ball.radius >= height) {
+    //   ball.pos.y = height - ball.radius;
+    //   ball.velocity.y *= -1;
+    // }
 
     Rectangle paddleRect = paddle.getBounds();
     if (CheckCollisionCircleRec(ball.pos, ball.radius, paddleRect)) {
