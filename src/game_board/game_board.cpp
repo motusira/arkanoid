@@ -22,20 +22,31 @@ void GameBoard::draw(void) {
     ball.draw();
   }
   paddle.draw();
+
+  DrawRectangle(0, 0, width, 50, DARKGRAY);
+
+  DrawText(TextFormat("Score: %d", score), 20, 15, 20, WHITE);
+
+  DrawLine(0, 50, width, 50, GRAY);
 }
 
 void GameBoard::init(int winWidth, int winHeight) {
   width = winWidth;
-  topOffset = winHeight / 8;
+  topOffset = 50;
   height = winHeight;
+  score = 0;
   bricks = generateRandomBricks(12, 25, BRICK_WIDTH, BRICK_HEIGHT, 5,
                                 width / 2 - (25 * BRICK_WIDTH + 24 * 5) / 2,
-                                topOffset + 20);
+                                topOffset + 100);
   paddle = Paddle(
       {static_cast<float>(height - 90), static_cast<float>(width / 2 - 30)},
       {180, 20});
   balls.emplace_back(Vector2{500, 600}, Vector2{200, -200});
-  balls.emplace_back(Vector2{500, 500}, Vector2{100, -200});
+  balls.emplace_back(Vector2{500, 500}, Vector2{200, -200});
+  balls.emplace_back(Vector2{200, 600}, Vector2{200, -200});
+  balls.emplace_back(Vector2{300, 500}, Vector2{200, -200});
+  balls.emplace_back(Vector2{400, 600}, Vector2{200, -200});
+  balls.emplace_back(Vector2{100, 500}, Vector2{300, -200});
 }
 
 void GameBoard::handleBallCollisions() {
@@ -50,8 +61,8 @@ void GameBoard::handleBallCollisions() {
       ball.pos.x = width - ball.radius;
       ball.velocity.x *= -1;
     }
-    if (ball.pos.y - ball.radius <= 0) {
-      ball.pos.y = ball.radius;
+    if (ball.pos.y - ball.radius <= 50) {
+      ball.pos.y = 50 + ball.radius;
       ball.velocity.y *= -1;
     }
     if (ball.pos.y + ball.radius >= height) {
@@ -113,6 +124,9 @@ void GameBoard::handleBallCollisions() {
         ball.velocity.y *= -1;
 
       brick.onBallHit();
+      if (brick.isDestroyed()) {
+        score += 10;
+      }
 
       break;
     }

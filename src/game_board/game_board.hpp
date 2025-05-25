@@ -18,6 +18,7 @@ private:
   int width;
   int height;
   int topOffset;
+  int score;
   std::vector<Brick> bricks;
   std::vector<Ball> balls;
   Paddle paddle;
