@@ -14,16 +14,18 @@ void GameBoard::update(float dt) {
     ball.update(dt);
   }
   handleBallCollisions();
-  balls.erase(std::remove_if(balls.begin(), balls.end(),
-                             [&](const Ball &b) {
-                               return (b.pos.y - b.radius) > height &&
-                                      (score -= 50);
-                             }),
+  balls.erase(std::remove_if(
+                  balls.begin(), balls.end(),
+                  [&](const Ball &b) { return (b.pos.y - b.radius) > height; }),
               balls.end());
+  if (balls.empty()) {
+    score -= 20;
+    balls.emplace_back(Vector2{0, 0}, Vector2{0, 0}, true);
+  }
 
   for (Ball &ball : balls) {
     if (ball.stuckToPaddle) {
-      Vector2 paddleCenter = paddle.pos;
+      Vector2 paddleCenter = {paddle.pos.x + paddle.size.x / 2, paddle.pos.y};
       ball.pos = {paddleCenter.x, paddle.getBounds().y - ball.radius - 2};
       if (IsKeyPressed(KEY_SPACE)) {
         ball.stuckToPaddle = false;
@@ -93,7 +95,9 @@ void GameBoard::draw(void) {
 
   DrawText(TextFormat("Score: %d", score), 20, 15, 20, WHITE);
   DrawText(TextFormat("Balls: %d", balls.size()), 280, 15, 20, WHITE);
-  DrawText(TextFormat("Temporary botom: %s", temporaryBottom ? "Activated" : "Disabled"), 480, 15, 20, WHITE);
+  DrawText(TextFormat("Temporary botom: %s",
+                      temporaryBottom ? "Activated" : "Disabled"),
+           480, 15, 20, WHITE);
 
   DrawLine(0, 50, width, 50, GRAY);
 }
